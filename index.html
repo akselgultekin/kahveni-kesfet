@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>Kahveni Keşfet | Sana Uygun Kahveyi Bul</title>
+  <meta name="description" content="6 kısa soruyla damak tadına en uygun kahveyi keşfet.">
+  <meta name="theme-color" content="#00754A">
+  <link rel="icon" type="image/png" href="starbucks-logo.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="app">
+
+    <header class="app-header">
+      <!-- Gerçek logo: starbucks-logo.png (proje kök dizini, küçük harf; Vercel/Linux
+           case-sensitive path ile birebir aynı yazılmalı) -->
+      <div class="brand">
+        <span class="brand-medallion" aria-hidden="true"><img src="starbucks-logo.png" alt="" width="40" height="38"></span>
+        <span class="brand-name">Kahveni Keşfet</span>
+      </div>
+    </header>
+
+    <main class="container">
+
+      <!-- AÇILIŞ EKRANI -->
+      <section id="screen-welcome" class="screen" aria-labelledby="welcome-title">
+        <img src="starbucks-logo.png" alt="Starbucks" width="92" height="87" class="intro-logo">
+        <p class="eyebrow">Kahveni Keşfet</p>
+        <h1 id="welcome-title">Senin kahven<br>hangisi?</h1>
+        <p class="lede">Damak tadını birkaç soruda keşfet. Sana en uygun kahveyi birlikte bulalım.</p>
+        <button type="button" id="btn-start" class="btn btn-primary btn-start">
+          Teste Başla
+          <i class="fa-solid fa-arrow-right" aria-hidden="true"></i>
+        </button>
+        <p class="meta">
+          <span class="meta-item"><i class="fa-solid fa-list-ul" aria-hidden="true"></i>6 soru</span>
+          <span class="meta-dot" aria-hidden="true">&middot;</span>
+          <span class="meta-item"><i class="fa-regular fa-clock" aria-hidden="true"></i>Yaklaşık 1 dakika</span>
+        </p>
+      </section>
+
+      <!-- TEST EKRANI -->
+      <section id="screen-quiz" class="screen" aria-labelledby="question-title" hidden>
+        <div class="quiz-top">
+          <p class="quiz-brand">Kahveni Keşfet</p>
+          <div class="step-row">
+            <p class="step" id="step-label">Soru 1 / 6</p>
+            <p class="step-percent" id="step-percent">%17</p>
+          </div>
+          <div class="track" role="progressbar" id="progress-bar"
+               aria-label="Test ilerlemesi" aria-valuemin="0" aria-valuemax="100" aria-valuenow="17">
+            <div class="fill" id="progress-fill"></div>
+          </div>
+        </div>
+        <div class="quiz-body">
+          <h2 class="question-title" id="question-title"></h2>
+          <div class="info-box" id="question-info" hidden></div>
+          <div class="options" id="options" role="group" aria-label="Cevap seçenekleri"></div>
+        </div>
+        <div class="quiz-nav">
+          <button type="button" id="btn-back" class="btn btn-text">Geri</button>
+          <button type="button" id="btn-next" class="btn btn-primary" disabled>Devam Et</button>
+        </div>
+      </section>
+
+      <!-- SONUÇ EKRANI -->
+      <section id="screen-result" class="screen" aria-labelledby="result-coffee" hidden>
+
+        <article class="hero-result">
+          <div class="hero-deco" aria-hidden="true">
+            <svg viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+              <path d="M47 11C30 2 10 19 10 37c0 14 17 23 29 14C55 39 61 19 47 11Z"/>
+              <path d="M29 10c16 12-4 17 7 27 6 6 6 10 4 14"/>
+            </svg>
+          </div>
+          <p class="eyebrow eyebrow-light">Sana en uygun kahve</p>
+          <h2 class="result-name" id="result-coffee"></h2>
+          <div class="match-seal">
+            <span class="seal-num" id="result-match">%86</span>
+            <span class="seal-cap">Uyum</span>
+          </div>
+          <p class="match-caption">Damak tadına uyum skoru</p>
+          <ul class="tags tags-light" id="result-tags" aria-label="Kahve özellikleri"></ul>
+          <p class="result-desc" id="result-desc"></p>
+        </article>
+
+        <section class="rating-summary" aria-label="Müşteri puanı">
+          <p class="mini-label">Müşteri puanı</p>
+          <p class="rating-line" id="rating-avg-line"></p>
+        </section>
+
+        <div class="divider" aria-hidden="true"><span></span><svg viewBox="0 0 32 32" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M23.5 6.5C15.5 2.5 6 10 6 18.5c0 6.5 8 10.5 13.5 6.5C26.5 19.5 29.5 10 23.5 6.5Z"/><path d="M15 5.5c7 5.5-1.5 8 3.5 12.5 2.8 2.6 2.8 4.6 1.8 6.5"/></svg><span></span></div>
+        <h3 class="alt-title">Diğer eşleşmelerin</h3>
+        <div class="alt-list" id="alt-list"></div>
+
+        <section class="review-section" aria-labelledby="review-title">
+          <h3 class="review-title" id="review-title">Bu kahveyi denedin mi?</h3>
+          <p class="review-sub">Deneyimini diğer kahve severlerle paylaş.</p>
+
+          <div class="stars" id="stars" role="group" aria-label="Yıldız puanı">
+            <button type="button" class="star" id="star-1" data-rating="1" aria-label="1 yıldız"><i class="fa-regular fa-star" aria-hidden="true"></i></button>
+            <button type="button" class="star" id="star-2" data-rating="2" aria-label="2 yıldız"><i class="fa-regular fa-star" aria-hidden="true"></i></button>
+            <button type="button" class="star" id="star-3" data-rating="3" aria-label="3 yıldız"><i class="fa-regular fa-star" aria-hidden="true"></i></button>
+            <button type="button" class="star" id="star-4" data-rating="4" aria-label="4 yıldız"><i class="fa-regular fa-star" aria-hidden="true"></i></button>
+            <button type="button" class="star" id="star-5" data-rating="5" aria-label="5 yıldız"><i class="fa-regular fa-star" aria-hidden="true"></i></button>
+          </div>
+          <p class="stars-value" id="stars-value" hidden><span id="stars-num">0</span> / 5</p>
+
+          <label class="field-label" for="review-text">Yorumunu paylaş</label>
+          <textarea id="review-text" maxlength="500" placeholder="Bu kahveyle ilgili deneyimini kısaca yaz…"></textarea>
+          <div class="field-row">
+            <p class="field-error" id="review-error" role="alert" hidden></p>
+            <p class="char-count" id="char-count">0 / 500</p>
+          </div>
+          <button type="button" id="btn-submit-review" class="btn btn-primary">Değerlendirmeyi Gönder</button>
+          <p class="form-success" id="review-success" role="status" hidden>
+            <i class="fa-solid fa-circle-check" aria-hidden="true"></i>
+            Değerlendirmen kaydedildi. Teşekkürler.
+          </p>
+
+          <div class="recent">
+            <h4 class="recent-title">Son değerlendirmeler</h4>
+            <div id="review-list"></div>
+            <button type="button" id="btn-toggle-reviews" class="btn btn-text" hidden></button>
+          </div>
+        </section>
+
+        <button type="button" id="btn-restart" class="btn btn-secondary">
+          <i class="fa-solid fa-rotate-right" aria-hidden="true"></i>
+          Testi Yeniden Yap
+        </button>
+      </section>
+
+    </main>
+  </div>
+  <script src="app.js"></script>
+</body>
+</html>

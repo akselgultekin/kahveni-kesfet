@@ -1,0 +1,749 @@
+/* Kahveni Keşfet — mobile-first premium mikro deneyim. Saf CSS, harici JS yok. */
+
+:root {
+  --green: #00754A;
+  --green-deep: #005C3A;
+  --ink: #1E3932;
+  --ink-deep: #0B2B22;
+  --cream: #F7F3EA;
+  --paper: #FFFFFF;
+  --tint: #E7F1EA;              /* çok açık doğal yeşil yüzey */
+  --line: #E0D7C2;              /* hafif nötr border */
+  --line-soft: #ECE4D1;
+  --muted: #4A5C54;
+  --gold: #B97F0F;              /* yıldızlar */
+  --star-empty: #D9CFB8;
+  --error: #B3261E;
+  --coffee: #8C5A2B;            /* sıcak kakao vurgusu */
+  --radius: 14px;
+  --font: "Manrope", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+}
+
+*, *::before, *::after { box-sizing: border-box; }
+
+html { -webkit-text-size-adjust: 100%; }
+
+body {
+  margin: 0;
+  font-family: var(--font);
+  background: var(--cream);
+  color: var(--ink);
+  line-height: 1.55;
+  overflow-x: hidden;
+  overflow-x: clip;
+  padding-top: env(safe-area-inset-top);
+  padding-bottom: env(safe-area-inset-bottom);
+}
+
+/* Mobil Safari 100vh sorunu için dvh yedeği */
+.app {
+  min-height: 100vh;
+  min-height: 100dvh;
+  display: flex;
+  flex-direction: column;
+}
+
+.visually-hidden {
+  position: absolute;
+  width: 1px; height: 1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+}
+
+/* ---- Üst bar / logo alanı ---- */
+.app-header {
+  background: var(--ink);
+  color: #FFFFFF;
+  padding: 12px 20px;
+  padding-left: max(20px, env(safe-area-inset-left));
+  padding-right: max(20px, env(safe-area-inset-right));
+}
+
+.brand {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  max-width: 30rem;
+  margin: 0 auto;
+}
+
+.brand-mark { display: none; }
+.brand-medallion {
+  flex: none;
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  background: #FFFFFF;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden; /* opak kare asset dairesel rozette kırpılır */
+}
+.brand-medallion img { width: 40px; height: 38px; object-fit: contain; }
+.brand-name { font-size: 1.125rem; font-weight: 800; letter-spacing: 0.02em; }
+
+/* ---- İçerik ---- */
+.container {
+  width: 100%;
+  max-width: 30rem;
+  margin: 0 auto;
+  padding: 28px 20px 44px;
+  padding-left: max(20px, env(safe-area-inset-left));
+  padding-right: max(20px, env(safe-area-inset-right));
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.screen[hidden] { display: none; }
+.screen { animation: fadein 220ms ease-out; }
+@keyframes fadein { from { opacity: 0; } to { opacity: 1; } }
+
+/* ---- Açılış ---- */
+#screen-welcome { text-align: center; position: relative; }
+
+/* Intro dikey ortalama: header dışı kalan alanı flex ile doldurup ortalar.
+   Sabit margin yok; kısa ekranda içerik taşarsa doğal scroll devam eder. */
+#screen-welcome.screen {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 24px 0 32px;
+}
+
+/* hidden her zaman kazanır (ID seçiciler display:flex'i ezemesin). */
+#screen-welcome.screen[hidden] { display: none; }
+
+/* El yapımı organik desen: çekirdek + yaprak + aroma eğrisi + spark (hazır görsel yok).
+   Section tüm yüksekliği kapladığı için desen header altından ekran altına yayılır.
+   %4 görünürlükte, okunabilirliği etkilemez. */
+#screen-welcome::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="220" height="220" viewBox="0 0 220 220"><g fill="none" stroke="%231E3932" stroke-width="2" stroke-linecap="round"><path d="M40 30c-13 19-13 53 0 72 8 12 25 12 33 0 13-19 13-53 0-72-8-12-25-12-33 0Z"/><path d="M40 30c14 8 14 21 8 33-6 14-6 27 8 39"/><path d="M150 120c8-14 24-18 34-10-2 14-16 24-30 20"/><path d="M150 120c6 8 10 18 8 30"/><path d="M120 30c6 10 6 22 0 34"/><path d="M196 60l2.5 6 6 2.5-6 2.5-2.5 6-2.5-6-6-2.5 6-2.5Z"/><circle cx="52" cy="170" r="2.5" fill="%231E3932" stroke="none"/><circle cx="180" cy="170" r="2" fill="%231E3932" stroke="none"/></g></svg>');
+  background-size: 220px 220px;
+  opacity: 0.04;
+  pointer-events: none;
+}
+
+#screen-welcome > * { position: relative; }
+
+/* Logo asset'i opak kare PNG olduğundan intro'da tasarlanmış beyaz karo
+   içinde sunulur (tesadüfi kare kenar görünmez); flex sütunda ortalanır. */
+.intro-logo {
+  width: 112px;
+  height: auto;
+  margin: 2px 0 20px;
+  align-self: center;
+  background: #FFFFFF;
+  padding: 10px;
+  border: 1px solid var(--line);
+  border-radius: 26px;
+  box-shadow: 0 8px 22px rgba(30, 57, 50, 0.1);
+}
+
+.eyebrow {
+  font-size: 0.75rem;
+  font-weight: 800;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--green);
+  margin: 0 0 10px;
+}
+
+h1 {
+  font-size: 1.75rem;
+  font-weight: 800;
+  line-height: 1.2;
+  letter-spacing: -0.015em;
+  margin: 0 0 12px;
+  color: var(--ink-deep);
+}
+
+.lede { font-size: 1rem; color: var(--muted); max-width: 22rem; margin: 0 auto 26px; }
+
+.meta { display: flex; align-items: center; justify-content: center; gap: 8px; font-size: 0.875rem; font-weight: 600; color: var(--muted); margin: 16px 0 0; }
+.meta-item { display: inline-flex; align-items: center; gap: 6px; }
+.meta-item i { color: var(--green); font-size: 0.8125rem; }
+.meta-dot { color: var(--line); }
+
+/* ---- Butonlar (min. 48px dokunma hedefi) ---- */
+.btn {
+  font: inherit;
+  border-radius: var(--radius);
+  min-height: 48px;
+  padding: 14px 24px;
+  font-weight: 800;
+  font-size: 1rem;
+  border: 1px solid transparent;
+  cursor: pointer;
+  transition: background-color 200ms ease, border-color 200ms ease, transform 150ms ease;
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.btn:active { transform: scale(0.985); }
+
+.btn:focus-visible {
+  outline: 3px solid var(--green);
+  outline-offset: 2px;
+}
+
+.btn-primary {
+  background: var(--green);
+  border-color: var(--green);
+  color: #FFFFFF;
+  width: 100%;
+}
+
+.btn-primary:hover { background: var(--green-deep); border-color: var(--green-deep); }
+
+.btn-primary:disabled {
+  background: #B9C6BF;
+  border-color: #B9C6BF;
+  cursor: not-allowed;
+  transform: none;
+}
+
+.btn-start { display: inline-flex; align-items: center; justify-content: center; gap: 10px; font-size: 1.0625rem; }
+.btn-start i { font-size: 0.9375rem; }
+
+.btn-secondary {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  background: transparent;
+  border-color: var(--ink);
+  color: var(--ink);
+  width: 100%;
+  margin-top: 26px;
+}
+
+.btn-secondary:hover { background: var(--tint); }
+
+.btn-text {
+  background: transparent;
+  border: none;
+  color: var(--muted);
+  min-width: 88px;
+  padding-left: 8px;
+  padding-right: 8px;
+}
+
+.btn-text:hover { color: var(--ink-deep); }
+
+/* ---- Test ekranı ---- */
+.quiz-top { margin-bottom: 0; }
+
+.quiz-brand {
+  font-size: 0.6875rem;
+  font-weight: 800;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--green);
+  margin: 0 0 10px;
+}
+
+.step-row {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 12px;
+  margin: 0 0 8px;
+}
+
+.step-percent {
+  font-size: 0.875rem;
+  font-weight: 800;
+  color: var(--green);
+  margin: 0;
+  font-variant-numeric: tabular-nums;
+}
+
+/* Soru bloğu tepeye yapışmaz: viewport oranlı nefes (kırılgan sabit margin yok).
+   vh yedeği + svh (mobil adres çubuğu sıçramasına dayanıklı). */
+.quiz-body {
+  padding-top: clamp(20px, 6vh, 56px);
+  padding-top: clamp(20px, 6svh, 56px);
+}
+
+.step {
+  font-size: 0.8125rem;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--muted);
+  margin: 0;
+}
+
+.track { height: 6px; border-radius: 999px; background: #E2DACA; overflow: hidden; }
+
+.fill {
+  height: 100%;
+  width: 16.7%;
+  border-radius: 999px;
+  background: var(--green);
+  transition: width 250ms ease;
+}
+
+.question-title {
+  font-size: 1.375rem;
+  font-weight: 800;
+  line-height: 1.3;
+  letter-spacing: -0.01em;
+  margin: 0 0 14px;
+  color: var(--ink-deep);
+}
+
+.info-box {
+  display: flex;
+  gap: 10px;
+  align-items: flex-start;
+  font-size: 0.875rem;
+  line-height: 1.6;
+  color: var(--ink);
+  background: var(--tint);
+  border: 1px solid #CBE0D4;
+  border-radius: 12px;
+  padding: 12px 14px;
+  margin: 0 0 18px;
+}
+
+.info-box::before {
+  font-family: "Font Awesome 6 Free";
+  font-weight: 900;
+  content: "\f05a";
+  color: var(--green);
+  font-size: 1rem;
+  line-height: 1.6;
+  flex: none;
+  width: 20px;
+  text-align: center;
+}
+
+.info-box[hidden] { display: none; }
+
+.options { display: grid; gap: 12px; margin: 0 0 8px; }
+
+.option {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  width: 100%;
+  text-align: left;
+  background: #FFFDF8;
+  border: 1.5px solid var(--line);
+  border-radius: 18px;
+  padding: 15px 16px 15px 14px;
+  min-height: 60px;
+  font: inherit;
+  font-size: 1rem;
+  font-weight: 700;
+  color: var(--ink);
+  cursor: pointer;
+  transition: border-color 160ms ease, background-color 160ms ease, box-shadow 160ms ease;
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: transparent;
+}
+
+/* Anlama uygun ikon kabı: 40px, tint zemin, koyu yeşil glif.
+   (Font Awesome yüklenemezse boş tint kare kalır; metin ve işlev bozulmaz.) */
+.option-icon {
+  flex: none;
+  width: 40px;
+  height: 40px;
+  border-radius: 12px;
+  background: var(--tint);
+  color: var(--green-deep);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.0625rem;
+  transition: background-color 160ms ease, color 160ms ease;
+}
+
+.option-icon i { width: 20px; text-align: center; }
+
+.option-icon span { display: inline-flex; }
+
+.option-icon svg { width: 19px; height: 19px; }
+
+.option:hover { border-color: var(--green); }
+.option:active { transform: scale(0.99); }
+
+.option:focus-visible {
+  outline: 3px solid var(--green);
+  outline-offset: 2px;
+}
+
+.option[aria-pressed="true"] {
+  border-color: var(--green);
+  background: var(--tint);
+  box-shadow: 0 2px 10px rgba(30, 57, 50, 0.12);
+}
+
+.option-label { flex: 1; }
+
+.option-check {
+  flex: none;
+  width: 26px;
+  height: 26px;
+  border: 2px solid #C6BFAE;
+  border-radius: 50%;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  color: #FFFFFF;
+  transition: background-color 200ms ease, border-color 200ms ease;
+}
+
+.option[aria-pressed="true"] .option-check {
+  background: var(--green);
+  border-color: var(--green);
+}
+
+.option[aria-pressed="true"] .option-icon {
+  background: var(--green);
+  color: #FFFFFF;
+}
+
+.option-check svg { display: none; }
+.option[aria-pressed="true"] .option-check svg { display: block; }
+
+/* Hafif micro-interaction: check 160ms'de belirir (bounce yok). */
+@keyframes pop {
+  0% { transform: scale(0.5); }
+  60% { transform: scale(1.12); }
+  100% { transform: scale(1); }
+}
+
+.option[aria-pressed="true"] .option-check { animation: pop 160ms ease-out; }
+
+.quiz-nav {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-top: clamp(20px, 3.5vh, 32px);
+  margin-top: clamp(20px, 3.5svh, 32px);
+  border-top: 1px solid var(--line-soft);
+  padding-top: 18px;
+}
+
+.quiz-nav .btn-text { color: var(--green-deep); font-weight: 800; }
+.quiz-nav .btn-primary { flex: 1; width: auto; }
+
+/* ---- Sonuç: koyu hero kart ---- */
+.hero-result {
+  position: relative;
+  overflow: hidden;
+  background: var(--ink);
+  color: var(--cream);
+  border-radius: 26px;
+  padding: 26px 24px 24px;
+  text-align: center;
+  margin-top: 4px;
+  animation: rise 260ms ease-out;
+}
+
+/* Sonuç hero girişi: hafif yükselme (flashy değil). */
+@keyframes rise {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.hero-deco {
+  position: absolute;
+  top: -52px;
+  right: -52px;
+  width: 196px;
+  height: 196px;
+  color: var(--cream);
+  opacity: 0.07;
+  pointer-events: none;
+}
+
+.hero-deco svg { width: 100%; height: 100%; }
+
+.eyebrow-light { color: #A9DDBE; margin-bottom: 8px; }
+
+.result-name {
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+  font-size: 2.125rem;
+  font-weight: 800;
+  line-height: 1.12;
+  margin: 0;
+  color: #FFFFFF;
+  overflow-wrap: break-word;
+}
+
+/* Uyum skoru: ekranın ana görsel ödülü. Sade seal/ring (dashboard grafiği değil). */
+.match-seal {
+  width: 112px;
+  height: 112px;
+  margin: 16px auto 8px;
+  border-radius: 50%;
+  border: 2.5px solid rgba(247, 243, 234, 0.75);
+  box-shadow: inset 0 0 0 7px rgba(247, 243, 234, 0.08);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.seal-num {
+  font-size: 2rem;
+  font-weight: 800;
+  line-height: 1;
+  color: #FFFFFF;
+  font-variant-numeric: tabular-nums;
+}
+
+.seal-cap {
+  font-size: 0.6875rem;
+  font-weight: 800;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: #A9DDBE;
+  margin-top: 5px;
+}
+
+.match-caption {
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: rgba(247, 243, 234, 0.72);
+  margin: 0;
+}
+
+.tags {
+  list-style: none;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 8px;
+  padding: 0;
+  margin: 14px 0 12px;
+}
+
+.tags li {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  font-size: 0.8125rem;
+  font-weight: 700;
+  color: var(--cream);
+  background: rgba(255, 255, 255, 0.12);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  border-radius: 999px;
+  padding: 7px 13px;
+}
+
+.tags li i, .tags li svg { color: #A9DDBE; font-size: 0.75rem; width: 16px; height: 16px; text-align: center; flex: none; }
+
+.result-desc {
+  font-size: 0.9375rem;
+  line-height: 1.65;
+  color: rgba(247, 243, 234, 0.88);
+  margin: 0;
+}
+
+/* Çekirdek motifli section divider (tek kullanım, kontrollü tekrar). */
+.divider {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  color: var(--green);
+  margin: 28px 0 0;
+}
+
+.divider span { flex: 1; height: 1px; background: var(--line); }
+
+/* ---- Müşteri puanı özeti (uyum skorundan ayrı hiyerarşi) ---- */
+.rating-summary {
+  background: var(--paper);
+  border: 1px solid var(--line);
+  border-radius: 16px;
+  padding: 16px 18px;
+  margin-top: 14px;
+}
+
+.mini-label {
+  font-size: 0.75rem;
+  font-weight: 800;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--muted);
+  margin: 0 0 6px;
+}
+
+.rating-line { display: flex; align-items: baseline; gap: 8px; margin: 0; font-size: 0.9375rem; }
+
+.rating-line .stars-static { color: var(--gold); font-size: 0.9375rem; letter-spacing: 2px; }
+
+.rating-avg { font-weight: 800; font-size: 1.25rem; color: var(--ink-deep); font-variant-numeric: tabular-nums; }
+.rating-count { color: var(--muted); font-size: 0.8125rem; font-weight: 600; }
+.rating-empty { color: var(--muted); font-size: 0.9375rem; }
+
+/* ---- Alternatif kahveler ---- */
+.alt-title {
+  font-size: 1.0625rem;
+  font-weight: 800;
+  color: var(--ink-deep);
+  margin: 14px 0 12px;
+}
+
+.alt-list { display: grid; gap: 10px; }
+
+.alt-card {
+  background: var(--paper);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  padding: 14px 16px;
+}
+
+.alt-name {
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+  font-size: 0.9375rem;
+  color: var(--ink-deep);
+  margin: 0;
+}
+
+.alt-match { font-size: 0.875rem; font-weight: 800; color: var(--green); margin: 2px 0 6px; }
+
+.alt-rating { font-size: 0.8125rem; font-weight: 700; color: var(--ink); margin: 0 0 6px; }
+.alt-rating i { color: var(--gold); margin-right: 4px; }
+.alt-rating span { color: var(--muted); font-weight: 600; }
+
+.alt-tags { font-size: 0.8125rem; color: var(--muted); margin: 0; }
+
+/* ---- Değerlendirme bölümü ---- */
+.review-section {
+  background: var(--paper);
+  border: 1px solid var(--line);
+  border-radius: 18px;
+  padding: 24px 20px 22px;
+  margin-top: 22px;
+}
+
+.review-title { font-size: 1.125rem; font-weight: 800; color: var(--ink-deep); margin: 0 0 4px; }
+.review-sub { font-size: 0.9375rem; color: var(--muted); margin: 0 0 14px; }
+
+.stars { display: flex; gap: 2px; margin: 0 0 4px -8px; }
+
+.star {
+  width: 48px;
+  height: 48px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: none;
+  border: none;
+  font-size: 1.625rem;
+  color: var(--star-empty);
+  cursor: pointer;
+  padding: 0;
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: transparent;
+  transition: color 150ms ease, transform 150ms ease;
+}
+
+.star:active { transform: scale(1.12); }
+
+.star:focus-visible {
+  outline: 3px solid var(--green);
+  outline-offset: -1px;
+  border-radius: 10px;
+}
+
+.star.active { color: var(--gold); }
+
+.stars-value { font-size: 0.875rem; font-weight: 800; color: var(--muted); margin: 0 0 16px; }
+.stars-value[hidden] { display: none; }
+
+.field-label { display: block; font-size: 0.9375rem; font-weight: 800; color: var(--ink-deep); margin: 0 0 8px; }
+
+#review-text {
+  width: 100%;
+  min-height: 104px;
+  resize: vertical;
+  font: inherit;
+  font-size: 0.9375rem;
+  line-height: 1.6;
+  color: var(--ink);
+  background: var(--cream);
+  border: 1.5px solid var(--line);
+  border-radius: 12px;
+  padding: 13px 14px;
+}
+
+#review-text::placeholder { color: #8A948E; opacity: 1; }
+
+#review-text:focus {
+  outline: none;
+  border-color: var(--green);
+  box-shadow: 0 0 0 3px rgba(0, 117, 74, 0.15);
+  background: #FFFFFF;
+}
+
+.field-row { display: flex; align-items: flex-start; justify-content: space-between; gap: 12px; margin: 8px 0 14px; min-height: 20px; }
+
+.field-error { display: flex; gap: 8px; align-items: flex-start; font-size: 0.875rem; font-weight: 600; color: var(--error); margin: 0; flex: 1; }
+.field-error[hidden] { display: none; }
+
+.char-count { font-size: 0.8125rem; color: var(--muted); margin: 0 0 0 auto; white-space: nowrap; }
+
+.form-success {
+  display: flex;
+  gap: 10px;
+  align-items: flex-start;
+  font-size: 0.9375rem;
+  font-weight: 600;
+  color: var(--ink-deep);
+  background: var(--tint);
+  border: 1px solid #CBE0D4;
+  border-radius: 12px;
+  padding: 13px 14px;
+  margin: 14px 0 0;
+}
+
+.form-success[hidden] { display: none; }
+.form-success i { color: var(--green); margin-top: 2px; }
+
+.recent { margin-top: 22px; }
+
+.recent-title { font-size: 1rem; font-weight: 800; color: var(--ink-deep); margin: 0 0 6px; }
+
+.review-item { border-top: 1px solid var(--line-soft); padding: 14px 0; }
+.review-item:first-child { border-top: none; }
+
+.review-stars { color: var(--gold); font-size: 0.8125rem; letter-spacing: 2px; margin-bottom: 6px; }
+.review-comment { font-size: 0.9375rem; line-height: 1.6; color: var(--ink); margin: 0 0 6px; overflow-wrap: break-word; }
+.review-meta { font-size: 0.75rem; color: var(--muted); margin: 0; }
+
+.review-empty { font-size: 0.9375rem; color: var(--muted); margin: 4px 0 0; }
+
+#btn-toggle-reviews { margin-top: 6px; padding-left: 0; min-height: 44px; font-size: 0.9375rem; }
+#btn-toggle-reviews[hidden] { display: none; }
+
+/* Masaüstü: ortalanmış dar sütun korunur */
+@media (min-width: 40rem) {
+  .container { padding-top: 44px; }
+  h1 { font-size: 2rem; }
+  .result-name { font-size: 2.375rem; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation: none !important;
+    transition: none !important;
+  }
+}
