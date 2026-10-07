@@ -8,83 +8,103 @@
 const COFFEES = [
   {
     name: "House Blend",
+    displayName: "House Blend",
+    image: "assets/coffees/House Blend.png",
+    recommendedDrink: "Latte",
     shortDescription:
       "Dengeli ve klasik içimiyle öne çıkan; kuruyemiş tonları ve hafif meyvemsi bitişiyle günlük içime uygun bir profil.",
     tags: ["Dengeli", "Kuruyemiş", "Meyvemsi"],
     character: "dengeli ve klasik",
-    image: ""
   },
   {
     name: "Pike Place",
+    displayName: "Pike Place Roast",
+    image: "assets/coffees/Pike Place Roast.png",
+    recommendedDrink: "Filtre Kahve",
     shortDescription:
       "Kakao ve karamel tonlarıyla dengeli, yumuşak bitişli klasik bir profil.",
     tags: ["Dengeli", "Kakao", "Yumuşak bitiş"],
     character: "dengeli ve klasik",
-    image: ""
   },
   {
     name: "Ethiopia",
+    displayName: "Ethiopia",
+    image: "assets/coffees/Ethiopia.png",
+    recommendedDrink: "Flat White",
     shortDescription:
       "Narenciye ve meyvemsi tonlarıyla ferah, canlı ve kendine özgü karakterli bir profil.",
     tags: ["Meyvemsi", "Canlı", "Karakterli"],
     character: "belirgin ve karakterli",
-    image: ""
   },
   {
     name: "Guatemala",
+    displayName: "Guatemala",
+    image: "assets/coffees/Guatemala.png",
+    recommendedDrink: "Cappuccino",
     shortDescription:
       "Kakao tonları ve hafif baharat dokunuşuyla dengeli ama karakterli bir profil.",
     tags: ["Dengeli", "Kakao", "Karakterli"],
     character: "dengeli ve klasik",
-    image: ""
   },
   {
     name: "Colombia Nariño",
+    displayName: "Colombia Nariño",
+    image: "assets/coffees/Colombia Nariño.png",
+    recommendedDrink: "Caramel Macchiato",
     shortDescription:
       "Kavrulmuş kuruyemiş ve karamel tonlarıyla dengeli, yuvarlak bir profil.",
     tags: ["Dengeli", "Kuruyemiş", "Karamel"],
     character: "dengeli ve klasik",
-    image: ""
   },
   {
     name: "Espresso",
+    displayName: "Espresso Roast",
+    image: "assets/coffees/Espresso Roast.png",
+    recommendedDrink: "Americano",
     shortDescription:
       "Kakao ve kavruk tonlarıyla yoğun, güçlü ve uzun süren bir profil.",
     tags: ["Yoğun", "Kakao", "Güçlü"],
     character: "yoğun ve güçlü",
-    image: ""
   },
   {
     name: "Sumatra",
+    displayName: "Sumatra",
+    image: "assets/coffees/Sumatra.png",
+    recommendedDrink: "Ristretto",
     shortDescription:
       "Topraksı ve baharatlı tonlarıyla dolgun, yoğun ve belirgin bir profil.",
     tags: ["Topraksı", "Baharatlı", "Yoğun"],
     character: "yoğun ve güçlü",
-    image: ""
   },
   {
     name: "Verona",
+    displayName: "Caffè Verona",
+    image: "assets/coffees/Caffè Verona.png",
+    recommendedDrink: "Mocha",
     shortDescription:
       "Kakao ve karamelize tatlarla yoğun, kavruk ve güçlü bir profil.",
     tags: ["Yoğun", "Kakao", "Kavruk"],
     character: "yoğun ve güçlü",
-    image: ""
   },
   {
     name: "Veranda",
+    displayName: "Veranda Blend",
+    image: "assets/coffees/Veranda Blend.png",
+    recommendedDrink: "White Mocha",
     shortDescription:
       "Hafif gövdeli, yumuşak ve tatlı; kolay içimli, narin bir profil.",
     tags: ["Hafif", "Yumuşak", "Kolay içimli"],
     character: "yumuşak ve rahat",
-    image: ""
   },
   {
     name: "Espresso Blonde",
+    displayName: "Blonde Espresso",
+    image: "assets/coffees/Blonde Espresso.png",
+    recommendedDrink: "Spanish",
     shortDescription:
       "Yumuşak içimli, tatlı ve hafif meyvemsi tonlar taşıyan narin bir profil.",
     tags: ["Yumuşak", "Meyvemsi", "Tatlı"],
     character: "yumuşak ve rahat",
-    image: ""
   }
 ];
 
@@ -383,7 +403,7 @@ function buildResultText(coffee) {
   const first =
     capitalizeTr(q1) + " karakterde kahveleri seviyorsun. " +
     capitalizeTr(q4) + " lezzetlerine yakın tercihlerinden dolayı " +
-    coffee.name + " damak tadına en yakın seçenek olarak öne çıktı.";
+    coffee.displayName + " damak tadına en yakın seçenek olarak öne çıktı.";
   return first + " " + coffee.shortDescription;
 }
 
@@ -493,9 +513,16 @@ function showResult() {
   const top = ranked.slice(0, 3);
 
   const main = findCoffee(top[0]);
-  document.getElementById("result-coffee").textContent = main.name;
+  document.getElementById("result-coffee").textContent = main.displayName;
   animateMatch(matchPercent(scores[top[0]]));
   document.getElementById("result-desc").textContent = buildResultText(main);
+
+  /* Ürün görseli: oran korunur, kırpma/deformasyon yok (CSS: contain + auto yükseklik). */
+  const resultImg = document.getElementById("result-img");
+  resultImg.setAttribute("src", main.image);
+  resultImg.setAttribute("alt", main.displayName + " kahve paketi");
+
+  document.getElementById("result-drink").textContent = main.recommendedDrink;
 
   const tagsBox = document.getElementById("result-tags");
   while (tagsBox.firstChild) tagsBox.removeChild(tagsBox.firstChild);
@@ -517,14 +544,19 @@ function showResult() {
 
     const title = document.createElement("p");
     title.className = "alt-name";
-    title.textContent = coffee.name;
+    title.textContent = coffee.displayName;
 
     const match = document.createElement("p");
     match.className = "alt-match";
     match.textContent = "%" + matchPercent(scores[name]) + " uyum";
 
+    const drink = document.createElement("p");
+    drink.className = "alt-drink";
+    drink.textContent = coffee.recommendedDrink;
+
     card.appendChild(title);
     card.appendChild(match);
+    card.appendChild(drink);
 
     const altStats = ReviewStore.getReviewStats(name);
     if (altStats.count > 0) {

@@ -482,6 +482,23 @@ h1 {
   overflow-wrap: break-word;
 }
 
+/* Ürün görseli: oran korunur, kırpma yok (yükseklik doğal akışta). */
+.product-shot {
+  position: relative;
+  margin: 18px 0 0;
+  border-radius: 20px;
+  overflow: hidden;
+  border: 1px solid rgba(247, 243, 234, 0.28);
+  background: #2A453C;
+}
+
+.product-shot img {
+  display: block;
+  width: 100%;
+  height: auto;
+  object-fit: contain;
+}
+
 /* Uyum skoru: ekranın ana görsel ödülü. Sade seal/ring (dashboard grafiği değil). */
 .match-seal {
   width: 112px;
@@ -495,6 +512,22 @@ h1 {
   align-items: center;
   justify-content: center;
 }
+
+/* Fotoğraf üzerinde yüzen rozet: ivory zemin + yeşil halka/metin. */
+.match-seal-float {
+  position: absolute;
+  right: 12px;
+  bottom: 12px;
+  margin: 0;
+  width: 104px;
+  height: 104px;
+  background: var(--cream);
+  border-color: var(--green);
+  box-shadow: 0 8px 22px rgba(11, 43, 34, 0.4);
+}
+
+.match-seal-float .seal-num { color: var(--ink-deep); }
+.match-seal-float .seal-cap { color: var(--green); }
 
 .seal-num {
   font-size: 2rem;
@@ -519,8 +552,41 @@ h1 {
   letter-spacing: 0.14em;
   text-transform: uppercase;
   color: rgba(247, 243, 234, 0.72);
-  margin: 0;
+  margin: 12px 0 0;
 }
+
+/* Önerilen içecek: çekirdek adından ayrı hiyerarşi, ivory yüzey. */
+.drink-rec {
+  background: var(--cream);
+  border-radius: 16px;
+  padding: 15px 18px 16px;
+  margin: 16px 0 0;
+  text-align: center;
+}
+
+.drink-label {
+  font-size: 0.75rem;
+  font-weight: 800;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--green);
+  margin: 0 0 6px;
+}
+
+.drink-name {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  font-size: 1.375rem;
+  font-weight: 800;
+  letter-spacing: -0.01em;
+  color: var(--ink-deep);
+  margin: 0;
+  overflow-wrap: break-word;
+}
+
+.drink-name i { color: var(--green); font-size: 1.125rem; }
 
 .tags {
   list-style: none;
@@ -529,7 +595,7 @@ h1 {
   justify-content: center;
   gap: 8px;
   padding: 0;
-  margin: 14px 0 12px;
+  margin: 16px 0 12px;
 }
 
 .tags li {
@@ -617,7 +683,9 @@ h1 {
   margin: 0;
 }
 
-.alt-match { font-size: 0.875rem; font-weight: 800; color: var(--green); margin: 2px 0 6px; }
+.alt-match { font-size: 0.875rem; font-weight: 800; color: var(--green); margin: 2px 0 2px; }
+
+.alt-drink { font-size: 0.9375rem; font-weight: 700; color: var(--ink-deep); margin: 0 0 6px; }
 
 .alt-rating { font-size: 0.8125rem; font-weight: 700; color: var(--ink); margin: 0 0 6px; }
 .alt-rating i { color: var(--gold); margin-right: 4px; }
